@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.restapi.restapi.dao.FilmeRepository;
 import com.restapi.restapi.model.Filme;
-import com.restapi.restapi.repository.FilmeRepository;
 
 @Service
 public class FilmeService {

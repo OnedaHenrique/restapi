@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.restapi.restapi.dao.AtorRepository;
 import com.restapi.restapi.model.Ator;
-import com.restapi.restapi.repository.AtorRepository;
 
 @Service
 public class AtorService {
