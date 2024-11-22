@@ -1,37 +1,37 @@
 package com.restapi.restapi.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.restapi.restapi.dao.AtorDAO;
+import com.restapi.restapi.model.Ator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.restapi.restapi.dao.AtorRepository;
-import com.restapi.restapi.model.Ator;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AtorService {
 
     @Autowired
-    private AtorRepository atorRepo;
-
-    public List<Ator> getAtores() {
-        return atorRepo.findAll();
-    }
-
-    public Optional<Ator> getAtor(int id) {
-        return atorRepo.findById(id);
-    }
+    private AtorDAO atorDAO;
 
     public Ator postAtor(Ator ator) {
-        return atorRepo.save(ator);
+        return atorDAO.save(ator);  // Chama o DAO para salvar o ator
     }
 
-    public void deleteAtor(int id) {
-        atorRepo.deleteById(id);
+    public Optional<Ator> getAtorById(Integer id) {
+        return atorDAO.findById(id);  // Chama o DAO para buscar ator pelo ID
+    }
+
+    public List<Ator> getAllAtores() {
+        return atorDAO.findAll();  // Chama o DAO para buscar todos os atores
+    }
+
+    public void deleteAtorById(Integer id) {
+        atorDAO.deleteById(id);  // Chama o DAO para deletar ator pelo ID
     }
 
     public Ator updateAtor(Ator ator) {
-        return atorRepo.save(ator);
+        atorDAO.update(ator);  // Chama o DAO para atualizar ator
+                return ator;
     }
 }
