@@ -1,8 +1,8 @@
 package com.restapi.restapi.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import com.restapi.restapi.model.Ator;
 import com.restapi.restapi.model.Filme;
 
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ public class FilmeDTO {
     private String titulo;
     private int faixaEtaria;
     private String sinopse;
-    private List<AtorDTO> atores; // Apenas os nomes dos atores
+    private List<Object> atores; // Apenas os nomes dos atores
 
     // Converter de Filme (Model) para FilmeDTO
     public static FilmeDTO fromEntity(Filme filme) {
@@ -28,8 +28,11 @@ public class FilmeDTO {
         dto.setTitulo(filme.getTitulo());
         dto.setFaixaEtaria(filme.getFaixaEtaria());
         dto.setSinopse(filme.getSinopse());
-        dto.setAtores(filme.getAtores() != null ? 
-            filme.getAtores().stream().map(Ator::getNome).toList() : null);
+        dto.setAtores(
+            filme.getAtores().stream()
+                .map(ator -> ator.getNome()) // Extraindo apenas o nome do ator
+                .collect(Collectors.toList())
+);
         return dto;
     }
 
