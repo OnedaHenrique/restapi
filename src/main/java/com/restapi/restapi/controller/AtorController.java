@@ -18,14 +18,14 @@ public class AtorController {
     @Autowired
     private AtorService atorService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<AtorDTO> createAtor(@RequestBody AtorDTO atorDTO) {
         Ator ator = atorDTO.toEntity();
         Ator createdAtor = atorService.postAtor(ator);
         return new ResponseEntity<>(AtorDTO.fromEntity(createdAtor), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<AtorDTO> getAtorById(@PathVariable Integer id) {
         Optional<Ator> ator = atorService.getAtorById(id);
         return ator.map(value -> ResponseEntity.ok(AtorDTO.fromEntity(value)))
@@ -40,13 +40,13 @@ public class AtorController {
                 .toList();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteAtor(@PathVariable Integer id) {
         atorService.deleteAtorById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<AtorDTO> updateAtor(@PathVariable Integer id, @RequestBody AtorDTO atorDTO) {
         Ator ator = atorDTO.toEntity();
         ator.setId(id);

@@ -19,14 +19,14 @@ public class FilmeController {
     @Autowired
     private FilmeService filmeService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<FilmeDTO> createFilme(@RequestBody FilmeDTO filmeDTO) {
         Filme filme = filmeDTO.toEntity();
         Filme createdFilme = filmeService.postFilme(filme);
         return new ResponseEntity<>(FilmeDTO.fromEntity(createdFilme), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<FilmeDTO> getFilmeById(@PathVariable Integer id) {
         Optional<Filme> filme = filmeService.getFilmeById(id);
         return filme
@@ -42,13 +42,13 @@ public class FilmeController {
                 .collect(Collectors.toList());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteFilme(@PathVariable Integer id) {
         filmeService.deleteFilmeById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<FilmeDTO> updateFilme(@PathVariable Integer id, @RequestBody FilmeDTO filmeDTO) {
         Filme filme = filmeDTO.toEntity();
         filme.setId(id);
