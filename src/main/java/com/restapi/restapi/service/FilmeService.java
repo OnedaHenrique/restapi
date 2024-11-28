@@ -30,7 +30,8 @@ public class FilmeService {
         filmeDAO.deleteById(id);
     }
 
-    public void updateFilme(Filme filme) {
+    public Filme updateFilme(Filme filme) {
         filmeDAO.update(filme);
+        return filme;
     }
 }

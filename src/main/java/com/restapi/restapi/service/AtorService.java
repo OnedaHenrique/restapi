@@ -15,23 +15,23 @@ public class AtorService {
     private AtorDAO atorDAO;
 
     public Ator postAtor(Ator ator) {
-        return atorDAO.save(ator);  // Chama o DAO para salvar o ator
+        return atorDAO.save(ator);
     }
 
     public Optional<Ator> getAtorById(Integer id) {
-        return atorDAO.findById(id);  // Chama o DAO para buscar ator pelo ID
+        return atorDAO.findById(id);
     }
 
     public List<Ator> getAllAtores() {
-        return atorDAO.findAll();  // Chama o DAO para buscar todos os atores
+        return atorDAO.findAll();
     }
 
     public void deleteAtorById(Integer id) {
-        atorDAO.deleteById(id);  // Chama o DAO para deletar ator pelo ID
+        atorDAO.deleteById(id);
     }
 
     public Ator updateAtor(Ator ator) {
-        atorDAO.update(ator);  // Chama o DAO para atualizar ator
+        atorDAO.update(ator);
                 return ator;
     }
 }

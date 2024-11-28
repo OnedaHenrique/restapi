@@ -21,16 +21,16 @@ public class FilmeController {
 
     @PostMapping
     public ResponseEntity<FilmeDTO> createFilme(@RequestBody FilmeDTO filmeDTO) {
-        Filme filme = filmeDTO.toEntity(); // Converte DTO para entidade
-        Filme createdFilme = filmeService.postFilme(filme); // Salva no banco
-        return new ResponseEntity<>(FilmeDTO.fromEntity(createdFilme), HttpStatus.CREATED); // Retorna como DTO
+        Filme filme = filmeDTO.toEntity();
+        Filme createdFilme = filmeService.postFilme(filme);
+        return new ResponseEntity<>(FilmeDTO.fromEntity(createdFilme), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<FilmeDTO> getFilmeById(@PathVariable Integer id) {
         Optional<Filme> filme = filmeService.getFilmeById(id);
         return filme
-                .map(value -> ResponseEntity.ok(FilmeDTO.fromEntity(value))) // Converte para DTO
+                .map(value -> ResponseEntity.ok(FilmeDTO.fromEntity(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -38,7 +38,7 @@ public class FilmeController {
     public List<FilmeDTO> getAllFilmes() {
         return filmeService.getAllFilmes()
                 .stream()
-                .map(FilmeDTO::fromEntity) // Converte todos para DTO
+                .map(FilmeDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
@@ -50,9 +50,9 @@ public class FilmeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<FilmeDTO> updateFilme(@PathVariable Integer id, @RequestBody FilmeDTO filmeDTO) {
-        Filme filme = filmeDTO.toEntity(); // Converte DTO para entidade
-        filme.setId(id); // Garante que o ID seja consistente
-        filmeService.updateFilme(filme); // Atualiza no banco
-        return ResponseEntity.ok(FilmeDTO.fromEntity(filme)); // Retorna como DTO
+        Filme filme = filmeDTO.toEntity();
+        filme.setId(id);
+        filmeService.updateFilme(filme);
+        return ResponseEntity.ok(FilmeDTO.fromEntity(filme));
     }
 }

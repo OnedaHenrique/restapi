@@ -19,9 +19,8 @@ public class FilmeDTO {
     private String titulo;
     private int faixaEtaria;
     private String sinopse;
-    private List<Object> atores; // Apenas os nomes dos atores
+    private List<Object> atores;
 
-    // Converter de Filme (Model) para FilmeDTO
     public static FilmeDTO fromEntity(Filme filme) {
         FilmeDTO dto = new FilmeDTO();
         dto.setId(filme.getId());
@@ -30,20 +29,18 @@ public class FilmeDTO {
         dto.setSinopse(filme.getSinopse());
         dto.setAtores(
             filme.getAtores().stream()
-                .map(ator -> ator.getNome()) // Extraindo apenas o nome do ator
+                .map(ator -> ator.getNome())
                 .collect(Collectors.toList())
 );
         return dto;
     }
 
-    // Converter de FilmeDTO para Filme (Model)
     public Filme toEntity() {
         Filme filme = new Filme();
         filme.setId(this.id);
         filme.setTitulo(this.titulo);
         filme.setFaixaEtaria(this.faixaEtaria);
         filme.setSinopse(this.sinopse);
-        // Atores são ignorados na entrada
         return filme;
     }
 }
