@@ -1,37 +1,40 @@
 package com.restapi.restapi.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.restapi.restapi.dao.FilmeDAO;
+import com.restapi.restapi.model.Filme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.restapi.restapi.model.Filme;
-import com.restapi.restapi.repository.FilmeRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FilmeService {
 
     @Autowired
-    private FilmeRepository filmeRepo;
+    private FilmeDAO filmeDAO;
 
-    public List<Filme> getFilmes() {
-        return filmeRepo.findAll();
-    }
-
-    public Optional<Filme> getFilme(int id) {
-        return filmeRepo.findById(id);
-    }
-    
     public Filme postFilme(Filme filme) {
-        return filmeRepo.save(filme);
+        return filmeDAO.save(filme);
     }
 
-    public void deleteFilme(int id) {
-        filmeRepo.deleteById(id);
+    public Optional<Filme> getFilmeById(Integer id) {
+        return filmeDAO.findById(id);
     }
 
+    public List<Filme> getAllFilmes() {
+        return filmeDAO.findAll();
+    }
+
+    @Transactional
+    public void deleteFilmeById(Integer id) {
+        filmeDAO.deleteById(id);
+    }
+
+    @Transactional
     public Filme updateFilme(Filme filme) {
-        return filmeRepo.save(filme);
+        filmeDAO.update(filme);
+        return filme;
     }
 }

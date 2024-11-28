@@ -1,59 +1,58 @@
 package com.restapi.restapi.controller;
 
+import com.restapi.restapi.dto.FilmeDTO;
+import com.restapi.restapi.model.Filme;
+import com.restapi.restapi.service.FilmeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.restapi.restapi.dto.FilmeDTO;
-import com.restapi.restapi.mapper.FilmeMapper;
-import com.restapi.restapi.model.Filme;
-import com.restapi.restapi.service.FilmeService;
 
 @RestController
 @RequestMapping("/filmes")
 public class FilmeController {
 
     @Autowired
-    private FilmeService FilmeService;
+    private FilmeService filmeService;
+
+    @PostMapping("/create")
+    public ResponseEntity<FilmeDTO> createFilme(@RequestBody FilmeDTO filmeDTO) {
+        Filme filme = filmeDTO.toEntity();
+        Filme createdFilme = filmeService.postFilme(filme);
+        return new ResponseEntity<>(FilmeDTO.fromEntity(createdFilme), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<FilmeDTO> getFilmeById(@PathVariable Integer id) {
+        Optional<Filme> filme = filmeService.getFilmeById(id);
+        return filme
+                .map(value -> ResponseEntity.ok(FilmeDTO.fromEntity(value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     @GetMapping
-    public List<FilmeDTO> getFilmes() {
-        return FilmeService.getFilmes().stream()
-            .map(FilmeMapper::toFilmeDTO)
-            .collect(Collectors.toList());
+    public List<FilmeDTO> getAllFilmes() {
+        return filmeService.getAllFilmes()
+                .stream()
+                .map(FilmeDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
-    public Optional<FilmeDTO> getFilme(@PathVariable int id) {
-        return FilmeService.getFilme(id).map(FilmeMapper::toFilmeDTO);
-    }
-
-    @PostMapping
-    public FilmeDTO postFilme(@RequestBody Filme filme) {
-        Filme filmeSalvo = FilmeService.postFilme(filme);
-        return FilmeMapper.toFilmeDTO(filmeSalvo);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAtor(@PathVariable int id) {
-        FilmeService.deleteFilme(id);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteFilme(@PathVariable Integer id) {
+        filmeService.deleteFilmeById(id);
         return ResponseEntity.noContent().build();
     }
-    
-    @PutMapping("/{id}")
-    public Filme updateAtor(@PathVariable int id, @RequestBody Filme filme) {
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<FilmeDTO> updateFilme(@PathVariable Integer id, @RequestBody FilmeDTO filmeDTO) {
+        Filme filme = filmeDTO.toEntity();
         filme.setId(id);
-        return FilmeService.updateFilme(filme);
+        filmeService.updateFilme(filme);
+        return ResponseEntity.ok(FilmeDTO.fromEntity(filme));
     }
 }
