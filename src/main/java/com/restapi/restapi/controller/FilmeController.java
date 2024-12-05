@@ -34,6 +34,25 @@ public class FilmeController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/idade/{idade}")
+    public List<FilmeDTO> getFilmeByIdade(@PathVariable Integer idade) {
+        List<Filme> filmes = filmeService.getFilmeByIdade(idade);
+        if (filmes.isEmpty()) {
+            throw new ResourceNotFoundException("Nenhum filme encontrado com a faixa etaria '" + idade + "'.");
+        }
+        return filmes
+                .stream()
+                .map(FilmeDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/titulo/{titulo}")
+    public ResponseEntity<FilmeDTO> getFilmeByTitulo(@PathVariable String titulo) {
+        Optional<Filme> filme = filmeService.getFilmeByTitulo(titulo);
+        return filme.map(value -> ResponseEntity.ok(FilmeDTO.fromEntity(value)))
+        .orElseThrow(() -> new ResourceNotFoundException("Filme com o titulo '" + titulo + "' não foi encontrado."));
+    }
+
     @GetMapping
     public List<FilmeDTO> getAllFilmes() {
         return filmeService.getAllFilmes()

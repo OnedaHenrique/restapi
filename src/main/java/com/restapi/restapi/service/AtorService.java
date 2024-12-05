@@ -19,8 +19,16 @@ public class AtorService {
         return atorDAO.save(ator);
     }
 
+    public Optional<Ator> getAtorByNome(String nome) {
+        return atorDAO.findByNome(nome);
+    }
+
     public Optional<Ator> getAtorById(Integer id) {
         return atorDAO.findById(id);
+    }
+    
+    public List<Ator> getAtorByNacio(String nacio) {
+        return atorDAO.findByNacio(nacio);
     }
 
     public List<Ator> getAllAtores() {

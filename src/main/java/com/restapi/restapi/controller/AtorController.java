@@ -25,12 +25,29 @@ public class AtorController {
         return new ResponseEntity<>(AtorDTO.fromEntity(createdAtor), HttpStatus.CREATED);
     }
 
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<AtorDTO> getAtorByNome(@PathVariable String nome) {
+        Optional<Ator> ator = atorService.getAtorByNome(nome);
+        return ator.map(value -> ResponseEntity.ok(AtorDTO.fromEntity(value)))
+        .orElseThrow(() -> new ResourceNotFoundException("Ator com o nome '" + nome + "' não foi encontrado."));
+    }
+
     @GetMapping("/id/{id}")
     public ResponseEntity<AtorDTO> getAtorById(@PathVariable Integer id) {
         Optional<Ator> ator = atorService.getAtorById(id);
         return ator.map(value -> ResponseEntity.ok(AtorDTO.fromEntity(value)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        .orElseThrow(() -> new ResourceNotFoundException("Ator com o id '" + id + "' não foi encontrado."));
     }
+
+    @GetMapping("/nacio/{nacio}")
+    public List<AtorDTO> getAtoresByNacionalidade(@PathVariable String nacio) {
+        List<Ator> atores = atorService.getAtorByNacio(nacio);
+        if (atores.isEmpty()) {
+            throw new ResourceNotFoundException("Nenhum ator encontrado com a nacionalidade '" + nacio + "'.");
+        }
+        return atores.stream().map(AtorDTO::fromEntity).toList();
+    }
+    
 
     @GetMapping
     public List<AtorDTO> getAllAtores() {
