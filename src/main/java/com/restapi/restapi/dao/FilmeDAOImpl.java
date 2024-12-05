@@ -2,6 +2,7 @@ package com.restapi.restapi.dao;
 
 import com.restapi.restapi.model.Filme;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 
 
@@ -28,9 +29,29 @@ public class FilmeDAOImpl implements FilmeDAO {
         return Optional.ofNullable(filme);
     }
 
+        @Override
+    public Optional<Filme> findByTitulo(String titulo) {
+        try {
+            Filme filme = entityManager.createQuery(
+                    "SELECT f FROM Filme f WHERE f.titulo LIKE :titulo", Filme.class)
+                    .setParameter("titulo", "%" + titulo + "%")
+                    .getSingleResult();
+            return Optional.ofNullable(filme);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
+
     @Override
     public List<Filme> findAll() {
         return entityManager.createQuery("SELECT f FROM Filme f", Filme.class)
+                .getResultList();
+    }
+
+    @Override
+    public List<Filme> findByIdade(Integer idade) {
+        return entityManager.createQuery("SELECT f FROM Filme f WHERE f.faixaEtaria = :idade", Filme.class)
+                .setParameter("idade", idade)
                 .getResultList();
     }
 

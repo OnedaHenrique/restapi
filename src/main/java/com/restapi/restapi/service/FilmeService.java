@@ -23,8 +23,16 @@ public class FilmeService {
         return filmeDAO.findById(id);
     }
 
+    public Optional<Filme> getFilmeByTitulo(String titulo) {
+        return filmeDAO.findByTitulo(titulo);
+    }
+
     public List<Filme> getAllFilmes() {
         return filmeDAO.findAll();
+    }
+
+    public List<Filme> getFilmeByIdade(Integer idade) {
+        return filmeDAO.findByIdade(idade);
     }
 
     @Transactional
